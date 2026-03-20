@@ -1,0 +1,30 @@
+In this first step, the document was loaded from a plain text file into Python memory. The purpose of this stage is to verify that the 
+source document can be accessed correctly and that its textual content is readable and complete. 
+
+Creating a separate utils.py file improves the organization and scalability of the project by isolating reusable helper functions from
+the main execution flow.
+The chunk_text function splits the document into smaller overlapping chunks of 800 characters, with a 150-character overlap between
+consecutive chunks. This size was chosen to keep enough context for meaningful retrieval while remaining small enough to search efficiently,
+and the overlap helps preserve information that may fall across chunk boundaries.
+
+This first function created, as an experiment, takes the user’s question and compares its words with the words in each chunk.
+It assigns a score based on how many words overlap and returns the top three most relevant chunks. Although simple, this method helps 
+illustrate how retrieval works before introducing more advanced techniques like embeddings.
+At this stage, retrieval is based only on direct word overlap between the user’s question and each chunk.
+
+The updated version of the retrieval function keeps the same word-overlap scoring approach, but first removes common stop words from both
+the user’s question and the document chunks.
+
+Next step is cleaning punctuation so matching becomes less noisy.
+Right now:
+	•	poison
+	•	poison?
+	•	poison,
+
+are treated as different words, which is bad for retrieval.
+
+The retrieval function was then updated to use a separate preprocessing helper, which cleaned punctuation, standardized capitalization
+and removed stop words before computing word overlap scores
+
+After retrieval, the top-ranked chunks were combined into a single context string to consolidate the most relevant information. This context serves
+as the input that will later be provided to the language model,
