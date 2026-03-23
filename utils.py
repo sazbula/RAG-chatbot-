@@ -27,7 +27,8 @@ def retrieve_chunks(question, chunks):
     for chunk in chunks:
         chunk_words = clean_words(chunk)
         score = len(question_words & chunk_words)
-        scored_chunks.append((score, chunk))
+        if score > 0:
+            scored_chunks.append((score, chunk))
 
     scored_chunks.sort(reverse=True, key=lambda x: x[0])
     return scored_chunks[:3]

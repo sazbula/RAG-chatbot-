@@ -27,4 +27,19 @@ The retrieval function was then updated to use a separate preprocessing helper, 
 and removed stop words before computing word overlap scores
 
 After retrieval, the top-ranked chunks were combined into a single context string to consolidate the most relevant information. This context serves
-as the input that will later be provided to the language model,
+as the input that will later be provided to the language model.
+
+The context is built.
+Now the next step is to build the full prompt that we will later send to the LLM.
+
+That prompt should include:
+	•	an instruction
+	•	the retrieved context
+	•	the user’s question
+
+A separate prompt.py module was created to isolate prompt design from the main pipeline logic and make the system easier to maintain and modify. 
+Inside this module, a build_prompt function formats the prompt template with the retrieved context and the user’s question, and this function is 
+then imported into main.py to generate the final prompt sent to the language model.
+
+The retrieve_chunks function was improved by skipping chunks with a score of zero, so only relevant chunks are used even when selecting the 
+top results.
