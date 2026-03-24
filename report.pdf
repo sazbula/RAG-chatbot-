@@ -43,3 +43,22 @@ then imported into main.py to generate the final prompt sent to the language mod
 
 The retrieve_chunks function was improved by skipping chunks with a score of zero, so only relevant chunks are used even when selecting the 
 top results.
+
+Ollama was used to run a local open-source language model, allowing the generation step of the RAG pipeline to be completed without relying on
+paid API access.
+
+
+The retrieval function was replaced with a TF-IDF–based approach to improve the quality of chunk matching. Instead of counting simple word
+overlap, both the query and document chunks are transformed into TF-IDF vectors, and cosine similarity is used to rank chunks based on the
+importance of shared terms, resulting in more meaningful and relevant retrieval.
+
+Now with the new tf-idf approach we do not need stop words and clean_words() function anymore.
+
+The chunking function was updated to group complete sentences into chunks, ensuring that text is not split mid-sentence and preserving semantic
+coherence for better retrieval.
+
+The prompt was designed to enforce a structured output format, requiring the model to provide both a direct answer and a supporting sentence from the
+context, ensuring that responses remain grounded in the retrieved information.
+
+The final step of the pipeline consists of sending the constructed prompt to the imported Ollama model, which generates an answer based on
+the retrieved context.

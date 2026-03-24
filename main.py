@@ -1,10 +1,10 @@
-from utils import chunk_text, retrieve_chunks
+from utils import chunk_text, retrieve_chunks_tfidf
 from prompt import build_prompt
 import requests
 
 
 # load document 
-with open("doc.pdf", "r", encoding="utf-8") as f:
+with open("doc.txt", "r", encoding="utf-8") as f:
     text = f.read()
 
 print("Document loaded successfully.")
@@ -16,7 +16,8 @@ chunks = chunk_text(text)
 question = input("Ask a question: ")
 
 # retrieval
-top_chunks = retrieve_chunks(question, chunks)
+top_chunks = retrieve_chunks_tfidf(question, chunks)
+
 
 # build context 
 context = "\n\n".join(chunk for score, chunk in top_chunks)
@@ -34,7 +35,7 @@ response = requests.post(
     "http://localhost:11434/api/generate",
     json={
         "model": "mistral",
-        "prompt": prompt,
+        "prompt": prompt, 
         "stream": False
     }
 )
